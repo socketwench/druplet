@@ -1,11 +1,13 @@
 web:
-  image: socketwench/druplet-web
+  build: .docker/web
   ports:
     - "80:80"
+    - "443:443"
   volumes:
-    - ./docroot:/var/www/html/
+    - ./docroot:/var/www/docroot
   links:
     - db
+    - cli
 db:
   image: mysql
   ports:
@@ -18,7 +20,6 @@ db:
 cli:
   build: .docker/cli
   volumes:
-    - ./docroot:/var/www
+    - ./docroot:/var/www/docroot
   links:
     - db
-    - web
