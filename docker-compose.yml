@@ -6,7 +6,6 @@ web:
   volumes:
     - ./docroot:/var/www/docroot
   links:
-    - db
     - fpm
 db:
   image: mysql
@@ -18,15 +17,17 @@ db:
     - MYSQL_USER=drupal
     - MYSQL_PASSWORD=thisisawesome
 fpm:
-  image: php:fpm
+  build: .docker/fpm
   volumes:
     - ./docroot:/var/www/docroot
   ports:
     - 9000
-#cli:
-#  build: .docker/cli
-#  volumes:
-#    - ./docroot:/var/www/docroot
-#  links:
-#    - db
-#    - web
+  links:
+    - db
+cli:
+ build: .docker/cli
+ volumes:
+   - ./docroot:/var/www/docroot
+ links:
+   - db
+   - web
